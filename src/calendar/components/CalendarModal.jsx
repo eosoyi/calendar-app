@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import ModalPortal from "react-modal/lib/components/ModalPortal";
+
 import Modal from "react-modal";
 import { addHours } from "date-fns";
+import DatePicker, { registerLocale } from "react-datepicker";
+import { es } from "date-fns/locale/es";
+import "react-datepicker/dist/react-datepicker.css";
+
+registerLocale("es", es);
 
 const customStyles = {
   content: {
@@ -20,14 +25,29 @@ export const CalendarModal = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   const [formValues, setFormValues] = useState({
-    title: "erick",
-    notes: "osoy",
+    title: "",
+    notes: "",
     start: new Date(),
     end: addHours(new Date(), 2),
   });
 
   const onCloseModal = () => {
     setIsOpen(false);
+  };
+
+  const onInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+
+  const onDateChange = (event, changing) => {
+    setFormValues({
+      ...formValues,
+      [changing]: event,
+    });
   };
 
   return (
@@ -44,12 +64,29 @@ export const CalendarModal = () => {
       <form className="container">
         <div className="form-group mb-2">
           <label>Fecha y hora inicio</label>
-          <input className="form-control" placeholder="Fecha inicio" />
+          <DatePicker
+            selected={formValues.start}
+            className="form-control"
+            onChange={(event) => onDateChange(event, "start")}
+            dateFormat="Pp"
+            showTimeSelect
+            locale='es'
+            timeCaption="Hora"
+          />
         </div>
 
         <div className="form-group mb-2">
           <label>Fecha y hora fin</label>
-          <input className="form-control" placeholder="Fecha inicio" />
+          <DatePicker
+            selected={formValues.end}
+            className="form-control"
+            onChange={(event) => onDateChange(event, "end")}
+            dateFormat="Pp"
+            minDate={formValues.start}
+            showTimeSelect
+            locale='es'
+            timeCaption="Hora"
+          />
         </div>
 
         <hr />
@@ -60,8 +97,10 @@ export const CalendarModal = () => {
             className="form-control"
             placeholder="Título del evento"
             name="title"
+            id="title"
             autoComplete="off"
             value={formValues.title}
+            onChange={onInputChange}
           />
           <small id="emailHelp" className="form-text text-muted">
             Una descripción corta
@@ -75,7 +114,9 @@ export const CalendarModal = () => {
             placeholder="Notas"
             rows="5"
             name="notes"
+            id="notes"
             value={formValues.notes}
+            onChange={onInputChange}
           ></textarea>
           <small id="emailHelp" className="form-text text-muted">
             Información adicional
