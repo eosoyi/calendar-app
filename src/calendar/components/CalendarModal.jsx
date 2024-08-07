@@ -26,7 +26,7 @@ Modal.setAppElement("#root");
 
 export const CalendarModal = () => {
   const [formSubmited, setFormSubmited] = useState(false);
-  const { isDateModalOpen } = useUiStore();
+  const { isDateModalOpen, closeDateModal } = useUiStore();
 
   const [formValues, setFormValues] = useState({
     title: "",
@@ -40,9 +40,7 @@ export const CalendarModal = () => {
     return formValues.title.length > 0 ? "is-valid" : "is-invalid";
   }, [formValues.title, formSubmited]);
 
-  const onCloseModal = () => {
-    // setIsOpen(false);
-  };
+  const onCloseModal = () => closeDateModal();
 
   const onInputChange = (event) => {
     const { name, value } = event.target;

@@ -11,23 +11,12 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useState } from "react";
 import { CalendarModal } from "../components/CalendarModal";
 import { useUiStore } from "../../hooks/useUiStore";
+import { useCalendarStore } from "../../hooks/useCalendarStore";
 
-const events = [
-  {
-    title: "Cumpleaños jefe",
-    notes: "Hay que comprar un pastel",
-    start: new Date(),
-    end: addHours(new Date(), 2),
-    bgColor: "#fafafa",
-    user: {
-      _id: "123",
-      name: "Erick",
-    },
-  },
-];
 
 export const CalendarPage = () => {
   const { openDateModal } = useUiStore();
+  const { events } = useCalendarStore();
   const [lastView, setLastView] = useState(
     localStorage.getItem("lastView") || "week"
   );
@@ -44,7 +33,6 @@ export const CalendarPage = () => {
   };
 
   const onDoubleClick = (event) => {
-    //window.alert(JSON.stringify(event));
     openDateModal();
   };
 
