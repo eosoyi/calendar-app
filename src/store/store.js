@@ -7,4 +7,9 @@ export const store = configureStore({
     calendar: calendarSlice.reducer,
     ui: uiSlice.reducer,
   },
+  // esta configuracion nos ayuda a deshabilitar la serializacion de las fechas para que redux-toolkit no lance error
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false, // Deshabilita la verificación de serialización
+    }),
 });
